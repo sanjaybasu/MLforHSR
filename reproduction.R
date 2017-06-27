@@ -36,7 +36,7 @@ influencers = seq(1,dim,round(dim/10)) # choosing which variables are truly infl
 set.seed(1000)
 coefs = runif(length(influencers))
 set.seed(1100)
-# simulating probability of the primary otucome based on influential variables, plus some complex interactions among other variables, producing positive and negative heterogeneity, and adding some noise
+# simulating probability of the primary outcome based on influential variables, plus some complex interactions among other variables, producing positive and negative heterogeneity, and adding some noise
 outprob = (rowMeans(coefs*covars[,influencers])/dim+covars[,round(3*dim/20)]*covars[,round(4*dim/20)]/2-covars[,round(5*dim/20)]*covars[,round(7*dim/20)]/2+rnorm(pop, mean =0, sd = .01)) 
 outprob[outprob>1]=1
 outprob[outprob<0]=0
