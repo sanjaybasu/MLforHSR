@@ -1,5 +1,5 @@
 rm(list=ls())
-pop = 1e5
+pop = 1e3
 dummvars = 40 # binary dummy variables, e.g., yes/no for specific diagnostic codes
 secovars = 30 # secondary dummy variables, whose existence is influenced by the above-noted dummy variables, e.g., more likely to be diabetic if also obese and hypertensive and hyperlipidemic
 catevars = 20 # categorical variables, values 1 through 5, e.g., income category, education, race/ethnicity, etc.
@@ -38,18 +38,23 @@ summary(covars)
 dim = dummvars+catevars+contvars+secovars
 influencers = seq(1,dim,round(dim/10))
 influencers
-y = rbinom(pop,1,rowMeans(covars[,])/dim)
+set.seed(1000)
+outprob = (rowMeans(covars[,influencers])/dim+covars[,influencers[1]]*covars[,influencers[2]]/2-covars[,influencers[3]]*covars[,influencers[4]]/2+rnorm(pop, mean =0, sd = 0.001))
+outprob[outprob>1]=1
+outprob[outprob<0]=0
+set.seed(1100)
+y = rbinom(pop,1,outprob)
 alldata = data.frame(cbind(x1,x2,x3,x4,y))
 colnames(alldata) = c(paste("X",c(1:dim),sep=""),"y")
 alldata$y = factor(alldata$y)
 library(caret)
-set.seed(1000)
-splitIndex <- createDataPartition(alldata$y, p = .50, list = FALSE, times = 1)
+set.seed(1200)
+splitIndex <- createDataPartition(alldata$y, p = .5, list = FALSE, times = 1)
 trainSplit <- alldata[ splitIndex,]
 testSplit <- alldata[-splitIndex,]
 prop.table(table(trainSplit$y))
 library(DMwR)
-set.seed(1100)
+set.seed(1300)
 trainSplit <- SMOTE(y ~ ., trainSplit, perc.over = 100, perc.under=200)
 prop.table(table(trainSplit$y))
 prop.table(table(testSplit$y))
