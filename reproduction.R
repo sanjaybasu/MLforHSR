@@ -4,7 +4,7 @@
 # install.packages('pROC')
 rm(list=ls())
 options(warn=-1)
-pop = 1e3
+pop = 1e5
 dummvars = 40 # binary dummy variables, e.g., yes/no for specific diagnostic codes
 secovars = 30 # secondary dummy variables, whose existence is influenced by the above-noted dummy variables, e.g., more likely to be diabetic if also obese and hypertensive and hyperlipidemic
 catevars = 20 # categorical variables, values 1 through 5, e.g., income category, education, race/ethnicity, etc.
