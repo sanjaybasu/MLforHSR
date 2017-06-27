@@ -3,7 +3,6 @@
 # install.packages('h2oEnsemble') # recommend cloning Github repo and installing to get newest version to avoid deep learning processing error
 # install.packages('pROC')
 rm(list=ls())
-options(warn=-1)
 pop = 1e5
 dummvars = 40 # binary dummy variables, e.g., yes/no for specific diagnostic codes
 secovars = 30 # secondary dummy variables, whose existence is influenced by the above-noted dummy variables, e.g., more likely to be diabetic if also obese and hypertensive and hyperlipidemic
@@ -47,6 +46,7 @@ alldata = data.frame(cbind(x1,x2,x3,x4,y))
 colnames(alldata) = c(paste("X",c(1:dim),sep=""),"y")
 alldata$y = factor(alldata$y)
 library(caret)
+options(warn=-1)
 set.seed(1300)
 splitIndex <- createDataPartition(alldata$y, p = .5, list = FALSE, times = 1) # randomly splitting the data into train and test sets
 trainSplit <- alldata[ splitIndex,]
@@ -90,11 +90,11 @@ h2o.deeplearning.7 <- function(..., hidden = c(100,100), activation = "MaxoutWit
 h2o.glm_nn <- function(..., non_negative = T) h2o.glm.wrapper(..., non_negative = non_negative) # define meta-learner [GLM restricted to non-neg weights, which is shown in the literature to improve outcomes from ensembles]
 # ensemble choosing the training data, list of learners defined above, and meta-learner 
 fit <- h2o.ensemble(x = x, y = y,training_frame = train,family = "binomial",learner = c("h2o.glm.1","h2o.glm.2","h2o.glm.3","h2o.randomForest.1", "h2o.randomForest.2","h2o.randomForest.3","h2o.gbm.1","h2o.gbm.2","h2o.gbm.3","h2o.gbm.4","h2o.gbm.5","h2o.gbm.6","h2o.gbm.7","h2o.gbm.8","h2o.deeplearning.1","h2o.deeplearning.2","h2o.deeplearning.3","h2o.deeplearning.4","h2o.deeplearning.5","h2o.deeplearning.6", "h2o.deeplearning.7"),metalearner = "h2o.glm_nn",cvControl = list(V = 5))
-perfml <- h2o.ensemble_performance(fit, newdata = test) # assessing C-stats
+h2o.ensemble_performance(fit, newdata = test) # C-stat for each ML method and ensemble
 fulllogmodel = glm(y~., data =trainSplit, family=binomial()) # conventional logistic model with all predictors
 aiclogmodel = step(fulllogmodel,trace=F) # conventional logistic model with backwards variable selection by AIC
 library(pROC)
 perffulllog = predict.glm(fulllogmodel,newdata=testSplit) # apply conventional logistic models to test data
 perfaiclog = predict.glm(aiclogmodel,newdata=testSplit)
-perffull <- roc(testSplit$y, perffulllog) # c-stats for conventional logistic models
-perfaic <- roc(testSplit$y, perfaiclog)
+roc(testSplit$y, perffulllog) # c-stat for conventional logistic model with all predictors
+roc(testSplit$y, perfaiclog) # c-stat for conventional logistic model with backwards variable selection by AIC
