@@ -1,6 +1,8 @@
 # install.packages('caret') # uncomment these first install.packages lines if you don't already have these R packages
 # install.packages('DMwR')
-# install.packages('h2oEnsemble') # recommend cloning Github repo and installing to get newest version to avoid deep learning processing error
+# install.packages('devtools')
+# library(devtools)
+# install_github("h2oai/h2o-3/h2o-r/ensemble/h2oEnsemble-package") # recommend cloning Github repo and installing to get newest version to avoid deep learning processing error
 # install.packages('pROC')
 rm(list=ls())
 pop = 1e5
