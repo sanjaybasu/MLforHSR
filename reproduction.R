@@ -2,7 +2,7 @@
 # install.packages('DMwR')
 # install.packages('devtools')
 # library(devtools)
-# install_github("h2oai/h2o-3/h2o-r/ensemble/h2oEnsemble-package") #NOTE: TO CORRECTLY ADMINISTER CUSTOM DEEP LEARNING SCRIPTS AS BELOW, IT IS IMPORTANT TO DOWNLOAD GITHUB, click 'clone' at the h2o-3 repo (https://github.com/h2oai/h2o-3), check out the "h2oEnsemble_v0.1.9" branch from in the GitHub program, cd to the h2o-r/ensemble directory and in your terminal window, type: R CMD install h2oEnsemble-package ; SEE: https://community.h2o.ai/questions/1588/issue-with-dl-h2o-ensembles-and-h2o-last-version.html
+# install_github("h2oai/h2o-3/h2o-r/ensemble/h2oEnsemble-package") #NOTE: TO CORRECTLY ADMINISTER CUSTOM DEEP LEARNING SCRIPTS AS BELOW, IT IS IMPORTANT TO DOWNLOAD GITHUB desktop, click 'clone' at the h2o-3 repo (https://github.com/h2oai/h2o-3), download the repo locally,  go to out the "h2oEnsemble_v0.1.9" branch from in the GitHub program, cd to the h2o-r/ensemble directory in your terminal window, then type in terminal: R CMD install h2oEnsemble-package ; SEE: https://community.h2o.ai/questions/1588/issue-with-dl-h2o-ensembles-and-h2o-last-version.html
 # install.packages('pROC')
 rm(list=ls())
 pop = 1e5
